@@ -1,0 +1,33 @@
+
+
+<!DOCTYPE html>
+<html>
+<body>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<!-- <form class="box" method="post" action="" enctype="multipart/form-data">
+  <div class="box__input">
+    <input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple />
+    <label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+    <button class="box__button" type="submit">Upload</button>
+  </div>
+  <div class="box__uploading">Uploading&hellip;</div>
+  <div class="box__success">Done!</div>
+  <div class="box__error">Error! <span></span>.</div>
+</form> -->
+
+<form action="uploader.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="MAX_FILE_SIZE" value="5000000000" />
+    Select image to upload:
+    <input type="file" name="myfile" id="myfile">
+    <input type="submit" value="Upload" name="submit">
+</form>
+
+</body>
+<script src="script.js"></script>
+
+
+
+
