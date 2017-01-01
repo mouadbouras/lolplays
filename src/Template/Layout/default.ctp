@@ -26,9 +26,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
+    <?= $this->Html->css('bootstrap.min.css'); ?>
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
-    <?= $this->Html->css('bootstrap.min.css'); ?>
     <?= $this->Html->css('style.css') ?>
 
     <?= $this->fetch('meta') ?>
@@ -37,6 +37,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
 </head>
 <body>
+    <div class="container">
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
@@ -44,16 +45,19 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </li>
         </ul>
         <div class="top-bar-section">
-            <ul class="right">
-                <li><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></li>
+            <ul class="left">
+                <li><a  href="/lolplays/videos/upload">Upload Video</a></li>
+                <li><a  href="/lolplays/videos/">All Videos</a></li>
             </ul>
         </div>
     </nav>
     <?= $this->Flash->render() ?>
-    <div class="container clearfix">
+    <div class="clearfix">
         <?= $this->fetch('content') ?>
     </div>
+
+    </div>
+
     <footer>
     </footer>
 </body>

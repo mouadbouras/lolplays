@@ -29,6 +29,17 @@ use Cake\View\Exception\MissingTemplateException;
 class PagesController extends AppController
 {
 
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Network\Response|null
+     */
+    public function index()
+    {
+        return $this->redirect(['action' => 'videos' ]);
+    }
+
     /**
      * Displays a view
      *

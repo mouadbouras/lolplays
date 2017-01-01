@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use finfo; 
 /**
  * Videos Controller
  *
@@ -35,7 +35,32 @@ class VideosController extends AppController
 
         // $this->set(compact('videos'));
         // $this->set('_serialize', ['videos']);
+        // $file = $this->params->form['files'];
+        // print_r($file);
     }
+
+    public function uploadFile($file = null)
+    {
+        // $videos = $this->paginate($this->Videos);
+
+        // $this->set(compact('videos'));
+        // $this->set('_serialize', ['videos']);
+        //$file = $this->params->form['files'];
+        if($this->uploaMydFile($this->request->data['file']) == false)
+        {
+            print("ERROR");
+            die();
+        }
+        else{
+            print("SUCCESS");
+            die();
+            //return $this->redirect(['action' => 'upload' ]);
+        }
+
+
+
+    }
+
 
     /**
      * View method
@@ -121,4 +146,80 @@ class VideosController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function uploaMydFile($file){
+            //print_r($file);
+
+            //die();
+            // Undefined | Multiple Files | $_FILES Corruption Attack
+            // If this request falls under any of them, treat it invalid.
+            if (
+                !isset($file['error']) ||
+                is_array($file['error'])
+            ) {
+                $this->Flash->error(__('Invalid parameters.')); 
+                return false;
+            }
+
+            // Check $_FILES['upfile']['error'] value.
+            switch ($file['error']) {
+                case UPLOAD_ERR_OK:
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $this->Flash->error(__('No file sent.')); 
+                    return false;
+                case UPLOAD_ERR_INI_SIZE:
+                case UPLOAD_ERR_FORM_SIZE:
+                    $this->Flash->error(__('Exceeded filesize limit.')); 
+                    return false;
+                default:
+                    $this->Flash->error(__('Unknown errors.')); 
+                    return false;
+            }
+
+            // You should also check filesize here. 
+            if ($file['size'] > 5000000000 ) {
+                $this->Flash->error(__('Exceeded filesize limit.' )); 
+                return false;
+            }
+
+            // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
+            // Check MIME Type by yourself.
+
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            if (false === $ext = array_search(
+                $finfo->file($file['tmp_name']),
+                array(
+                    'mp4' => 'video/mp4',
+                    'webm' => 'video/webm',
+                ),
+                true
+            )) {
+                $this->Flash->error(__('Invalid file format.')); 
+                return false;
+            }
+
+            // You should name it uniquely.
+            // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
+            // On this example, obtain safe unique name from its binary data.
+            if (!move_uploaded_file(
+                $file['tmp_name'],
+                sprintf( WWW_ROOT . '/uploads/%s.%s',
+                    sha1_file($file['tmp_name']),
+                    $ext
+                )
+            )) {
+                $this->Flash->error(__('Failed to move uploaded file.')); 
+                return false;
+            }
+
+            $video = $this->Videos->newEntity();
+            $video->name = pathinfo($file['name'],PATHINFO_FILENAME);
+            $video->url = sha1_file($file['tmp_name']) . "." . $ext;
+            $this->Videos->save($video);
+            return true; 
+
+
+    }
+
 }
